@@ -5,16 +5,23 @@ public class Product {
     private final int price;
     private int quantity;
     private final String promotionName;
+    private final boolean isActive;
 
-    public Product(final String name, final int price, final int quantity, final String promotionName) {
+    public Product(final String name, final int price, final int quantity, final String promotionName,
+                   final boolean isActive) {
         this.name = name;
         this.price = price;
         this.quantity = quantity;
         this.promotionName = promotionName;
+        this.isActive = isActive;
     }
 
     public void changeQuantity(final int quantity) {
         this.quantity = quantity;
+    }
+
+    public boolean isActive() {
+        return isActive;
     }
 
     @Override
