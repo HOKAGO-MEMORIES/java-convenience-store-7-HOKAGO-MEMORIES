@@ -38,15 +38,12 @@ public class ProductService {
         String name = tokens[0];
         int price = Integer.parseInt(tokens[1]);
         int quantity = Integer.parseInt(tokens[2]);
-        String promotionName = tokens[3];
+        String promotionName = tokens[3].equals("null") ? null : tokens[3];
 
         return new Product(name, price, quantity, promotionName, isActiveProduct(promotionName));
     }
 
     private boolean isActiveProduct(String promotionName) {
-        if (promotionName == null) {
-            return true;
-        }
-        return checker.isValidPromotion(promotionName);
+        return promotionName == null || checker.isValidPromotion(promotionName);
     }
 }

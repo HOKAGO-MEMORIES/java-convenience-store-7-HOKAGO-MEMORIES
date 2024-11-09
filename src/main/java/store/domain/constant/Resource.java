@@ -1,16 +1,16 @@
 package store.domain.constant;
 
 public enum Resource {
-    PRODUCTS_FILE("resources/products.md"),
-    PROMOTIONS_FILE("resources/promotions.md");
+    PROMOTIONS_FILE("promotions.md"),
+    PRODUCTS_FILE("products.md");
 
-    private final String filePath;
+    private final String fileName;
 
-    Resource(String filePath) {
-        this.filePath = filePath;
+    Resource(String fileName) {
+        this.fileName = fileName;
     }
 
-    public String getFilePath() {
-        return filePath;
+    public String getFileName() {
+        return fileName;
     }
 }

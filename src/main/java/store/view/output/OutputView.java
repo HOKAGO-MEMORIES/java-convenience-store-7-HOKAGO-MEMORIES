@@ -1,10 +1,15 @@
 package store.view.output;
 
+import store.domain.ProductCollection;
 import store.util.StoreMessages;
 
 public class OutputView {
     public void printWelcome() {
         System.out.println(StoreMessages.WELCOME.getMessage());
+    }
+
+    public void printProductCollection(ProductCollection productCollection) {
+        System.out.println(productCollection.toString());
     }
 
     public void printPurchase() {
