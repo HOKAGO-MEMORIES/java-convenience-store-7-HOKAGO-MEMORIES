@@ -59,3 +59,5 @@
     - [ ] 7-1. 사용자가 잘못된 값을 입력했을 때, `[ERROR]`로 시작하는 오류 메시지와 함께 상황에 맞는 안내를 출력한다.
         - [ ] 7-1-1. 예외 처리가 된 부분부터 입력을 다시 받도록 한다.
     - [ ] 7-2. `Exception`이 아닌 `IllegalArgumentException`, `IllegalStateException` 등과 같은 명확한 유형을 처리한다.
+
+---  
