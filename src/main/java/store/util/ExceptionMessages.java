@@ -5,7 +5,8 @@ public enum ExceptionMessages {
     INVALID_FORMAT("올바르지 않은 형식으로 입력했습니다."),
     INVALID_PRODUCT("존재하지 않는 상품입니다."),
     EXCEED_QUANTITY("재고 수량을 초과하여 구매할 수 없습니다."),
-    INVALID_INPUT("잘못된 입력입니다.");
+    INVALID_INPUT("잘못된 입력입니다."),
+    INVALID_REPLY("잘못된 응답입니다.");
 
     private final String message;
 
