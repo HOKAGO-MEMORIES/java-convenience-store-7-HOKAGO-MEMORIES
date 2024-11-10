@@ -1,12 +1,13 @@
 package store.validator;
 
+import java.util.Map;
 import store.domain.ProductCollection;
+import store.extractor.OrderExtractor;
 import store.util.ExceptionMessages;
 
 public class OrderValidator {
 
-    private static final String DELIMITER = ",";
-    private static final String HYPHEN = "-";
+
     private static final String CORRECT_FORMAT = "\\[[가-힣]+-\\d+\\](,\\[[가-힣]+-\\d+\\])*";
 
     public static void validateFormat(String order) {
@@ -16,12 +17,10 @@ public class OrderValidator {
     }
 
     public static void validateProduct(String order, ProductCollection productCollection) {
-        String[] orders = order.split(DELIMITER);
-        for (String productOrder : orders) {
-            productOrder = productOrder.replace("[", "").replace("]", "");
-            String[] productPart = productOrder.split(HYPHEN);
-            String productName = productPart[0];
-            int orderQuantity = Integer.parseInt(productPart[1]);
+        Map<String, Integer> orderItems = OrderExtractor.extractOrder(order);
+        for (Map.Entry<String, Integer> item : orderItems.entrySet()) {
+            String productName = item.getKey();
+            int orderQuantity = item.getValue();
 
             validateProductName(productName, productCollection);
             validateQuantity(productName, orderQuantity, productCollection);
