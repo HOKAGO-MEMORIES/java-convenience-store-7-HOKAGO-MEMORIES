@@ -2,6 +2,7 @@ package store.domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ProductCollection {
     private final List<Product> products;
@@ -12,6 +13,25 @@ public class ProductCollection {
 
     public void addProduct(Product product) {
         products.add(product);
+    }
+
+    public boolean containsProduct(String productName) {
+        return products.stream()
+                .anyMatch(product -> product.hasName(productName));
+    }
+
+    public boolean hasEnoughQuantity(String productName, int quantity) {
+        List<Product> matchingProducts = getProduct(productName);
+        for (Product product : matchingProducts) {
+            quantity = product.decreaseQuantity(quantity);
+        }
+        return quantity <= 0;
+    }
+
+    private List<Product> getProduct(String productName) {
+        return products.stream()
+                .filter(product -> product.hasName(productName))
+                .collect(Collectors.toList());
     }
 
     @Override

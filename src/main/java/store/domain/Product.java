@@ -24,6 +24,14 @@ public class Product {
         return isActive;
     }
 
+    public boolean hasName(String productName) {
+        return name.equals(productName);
+    }
+
+    public int decreaseQuantity(int quantity) {
+        return quantity - this.quantity;
+    }
+
     @Override
     public String toString() {
         String checkedQuantity = (quantity == 0) ? "재고 없음" : String.format("%d개", quantity);

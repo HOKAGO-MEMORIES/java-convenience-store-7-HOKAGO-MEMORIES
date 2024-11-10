@@ -23,5 +23,6 @@ public class StoreController {
         outputView.printWelcome();
         outputView.printProductCollection(productCollection);
         outputView.printPurchase();
+        inputView.readOrder(productCollection);
     }
 }
