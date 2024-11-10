@@ -1,15 +1,14 @@
-package store.service;
+package store.config;
 
 import store.domain.ProductCollection;
 import store.domain.PromotionCollection;
 import store.domain.checker.PromotionChecker;
+import store.service.ProductService;
+import store.service.PromotionService;
 import store.service.reader.MarkdownReader;
 
-public class InitStoreService {
+public class AppInitializer {
     private final static MarkdownReader reader = new MarkdownReader();
-
-    public InitStoreService() {
-    }
 
     public static PromotionCollection initPromotionCollection() {
         PromotionService promotionService = new PromotionService(reader);
