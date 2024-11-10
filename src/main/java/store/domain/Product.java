@@ -27,7 +27,7 @@ public class Product {
     @Override
     public String toString() {
         String checkedQuantity = (quantity == 0) ? "재고 없음" : String.format("%d개", quantity);
-        String checkedPromotionName = (promotionName == null) ? "" : promotionName;
+        String checkedPromotionName = (promotionName.equals("null")) ? "" : promotionName;
         return String.format("- %s %d원 %s %s", name, price, checkedQuantity, checkedPromotionName);
     }
 }

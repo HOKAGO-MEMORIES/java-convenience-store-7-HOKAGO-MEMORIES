@@ -9,6 +9,7 @@ import store.service.reader.MarkdownReader;
 
 public class ProductService {
     private static final String DELIMITER = ",";
+    private static final String NO_PROMOTION = "null";
     private final MarkdownReader reader;
     private final PromotionChecker checker;
 
@@ -38,12 +39,12 @@ public class ProductService {
         String name = tokens[0];
         int price = Integer.parseInt(tokens[1]);
         int quantity = Integer.parseInt(tokens[2]);
-        String promotionName = tokens[3].equals("null") ? null : tokens[3];
+        String promotionName = tokens[3];
 
         return new Product(name, price, quantity, promotionName, isActiveProduct(promotionName));
     }
 
     private boolean isActiveProduct(String promotionName) {
-        return promotionName == null || checker.isValidPromotion(promotionName);
+        return promotionName.equals(NO_PROMOTION) || checker.isValidPromotion(promotionName);
     }
 }
