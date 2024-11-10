@@ -28,7 +28,7 @@ public class ProductCollection {
         return quantity <= 0;
     }
 
-    private List<Product> getProduct(String productName) {
+    public List<Product> getProduct(String productName) {
         return products.stream()
                 .filter(product -> product.hasName(productName))
                 .collect(Collectors.toList());

@@ -18,6 +18,7 @@ public class StoreController {
         while (true) {
             OrderItemsCollection orderItemsCollection = new PurchaseController(
                     productCollection).createOrderItemsCollection(productCollection);
+            new PromotionController(productCollection, promotionCollection).applyPromotion(orderItemsCollection);
         }
 
     }

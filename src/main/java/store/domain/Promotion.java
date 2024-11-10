@@ -25,4 +25,12 @@ public class Promotion {
     public boolean isActive(LocalDate currentDate) {
         return !currentDate.isBefore(startDate) && !currentDate.isAfter(endDate);
     }
+
+    public int getBuy() {
+        return buy;
+    }
+
+    public int getGet() {
+        return get;
+    }
 }

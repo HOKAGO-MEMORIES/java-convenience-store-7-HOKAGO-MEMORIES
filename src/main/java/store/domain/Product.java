@@ -28,6 +28,22 @@ public class Product {
         return name.equals(productName);
     }
 
+    public boolean hasPromotion() {
+        return !promotionName.equals("null");
+    }
+
+    public String getPromotionName() {
+        return promotionName;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public String getName() {
+        return name;
+    }
+
     public int decreaseQuantity(int quantity) {
         return quantity - this.quantity;
     }
