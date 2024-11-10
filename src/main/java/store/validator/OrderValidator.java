@@ -1,6 +1,7 @@
 package store.validator;
 
-import java.util.Map;
+import store.domain.OrderItems;
+import store.domain.OrderItemsCollection;
 import store.domain.ProductCollection;
 import store.extractor.OrderExtractor;
 import store.util.ExceptionMessages;
@@ -17,10 +18,10 @@ public class OrderValidator {
     }
 
     public static void validateProduct(String order, ProductCollection productCollection) {
-        Map<String, Integer> orderItems = OrderExtractor.extractOrder(order);
-        for (Map.Entry<String, Integer> item : orderItems.entrySet()) {
-            String productName = item.getKey();
-            int orderQuantity = item.getValue();
+        OrderItemsCollection orderItemsCollection = OrderExtractor.extractOrder(order);
+        for (OrderItems orderItems : orderItemsCollection.getOrderItems()) {
+            String productName = orderItems.getProductName();
+            int orderQuantity = orderItems.getOrderQuantity();
 
             validateProductName(productName, productCollection);
             validateQuantity(productName, orderQuantity, productCollection);

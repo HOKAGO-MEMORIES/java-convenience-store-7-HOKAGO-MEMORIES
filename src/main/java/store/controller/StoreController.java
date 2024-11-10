@@ -1,5 +1,6 @@
 package store.controller;
 
+import store.domain.OrderItemsCollection;
 import store.domain.ProductCollection;
 import store.domain.PromotionCollection;
 
@@ -15,7 +16,8 @@ public class StoreController {
 
     public void run() {
         while (true) {
-            new PurchaseController(productCollection);
+            OrderItemsCollection orderItemsCollection = new PurchaseController(
+                    productCollection).createOrderItemsCollection(productCollection);
         }
 
     }

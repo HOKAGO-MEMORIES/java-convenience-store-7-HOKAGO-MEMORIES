@@ -1,21 +1,29 @@
 package store.extractor;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import store.domain.OrderItems;
+import store.domain.OrderItemsCollection;
 
 public class OrderExtractor {
     private static final String DELIMITER = ",";
     private static final String HYPHEN = "-";
 
-    public static Map<String, Integer> extractOrder(String order) {
+    public static OrderItemsCollection extractOrder(String order) {
         String[] orders = order.split(DELIMITER);
-        Map<String, Integer> orderItems = new LinkedHashMap<String, Integer>();
+        return makeOrderItemsCollection(orders);
+    }
+
+    private static OrderItemsCollection makeOrderItemsCollection(String[] orders) {
+        OrderItemsCollection orderItemsCollection = new OrderItemsCollection();
 
         for (String productOrder : orders) {
-            productOrder = productOrder.replace("[", "").replace("]", "");
-            String[] productPart = productOrder.split(HYPHEN);
-            orderItems.put(productPart[0], Integer.parseInt(productPart[1]));
+            String[] OrderPart = extractProductOrder(productOrder);
+            orderItemsCollection.addOrderItems(new OrderItems(OrderPart[0], Integer.parseInt(OrderPart[1])));
         }
-        return orderItems;
+        return orderItemsCollection;
+    }
+
+    private static String[] extractProductOrder(String productOrder) {
+        productOrder = productOrder.replace("[", "").replace("]", "");
+        return productOrder.split(HYPHEN);
     }
 }
