@@ -15,10 +15,10 @@ public enum ExceptionMessages {
     }
 
     public String getMessage(String file) {
-        return String.format("ERROR: %s", String.format(message, file));
+        return String.format("[ERROR] %s", String.format(message, file));
     }
 
     public String getMessage() {
-        return String.format("ERROR: %s 다시 입력해 주세요.", message);
+        return String.format("[ERROR] %s 다시 입력해 주세요.", message);
     }
 }
