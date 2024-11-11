@@ -35,7 +35,8 @@ public class ReceiptController {
                     ReceiptFormat.formatValue(String.valueOf(item.getOrderQuantity()),
                             ReceiptFormat.QUANTITY.getWidth()));
             System.out.print(
-                    ReceiptFormat.formatValue(String.valueOf(item.getTotalPrice()), ReceiptFormat.PRICE.getWidth()));
+                    ReceiptFormat.formatValue(String.format("%,d", item.getTotalPrice()),
+                            ReceiptFormat.PRICE.getWidth()));
             System.out.println();
         }
     }
@@ -55,30 +56,29 @@ public class ReceiptController {
 
         System.out.println(
                 ReceiptFormat.formatValue(ReceiptFormat.TOTAL_PAYMENT.getLabel(),
-                        ReceiptFormat.TOTAL_PAYMENT.getWidth())
-                        +
-                        ReceiptFormat.formatValue(String.valueOf(receipt.getTotalAmount()),
+                        ReceiptFormat.TOTAL_PAYMENT.getWidth()) +
+                        ReceiptFormat.formatValue(String.format("%,d", receipt.getTotalAmount()),
                                 ReceiptFormat.TOTAL_PAYMENT.getWidth())
         );
 
         System.out.println(
                 ReceiptFormat.formatValue(ReceiptFormat.PROMOTION_DISCOUNT.getLabel(),
                         ReceiptFormat.PROMOTION_DISCOUNT.getWidth()) +
-                        ReceiptFormat.formatValue(String.format("%s%s", MINUS, receipt.getPromotionDiscount()),
+                        ReceiptFormat.formatValue(String.format("%s%,d", MINUS, receipt.getPromotionDiscount()),
                                 ReceiptFormat.PROMOTION_DISCOUNT.getWidth())
         );
 
         System.out.println(
                 ReceiptFormat.formatValue(ReceiptFormat.MEMBERSHIP_DISCOUNT.getLabel(),
                         ReceiptFormat.MEMBERSHIP_DISCOUNT.getWidth()) +
-                        ReceiptFormat.formatValue(String.format("%s%s", MINUS, receipt.getMembershipDiscount()),
+                        ReceiptFormat.formatValue(String.format("%s%,d", MINUS, receipt.getMembershipDiscount()),
                                 ReceiptFormat.MEMBERSHIP_DISCOUNT.getWidth())
         );
 
         System.out.println(
                 ReceiptFormat.formatValue(ReceiptFormat.FINAL_PAYMENT.getLabel(),
                         ReceiptFormat.FINAL_PAYMENT.getWidth()) +
-                        ReceiptFormat.formatValue(String.valueOf(receipt.getFinalPayment()),
+                        ReceiptFormat.formatValue(String.format("%,d", receipt.getFinalPayment()),
                                 ReceiptFormat.FINAL_PAYMENT.getWidth())
         );
     }

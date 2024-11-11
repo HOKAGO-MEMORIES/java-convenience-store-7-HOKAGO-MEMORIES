@@ -25,8 +25,8 @@ public class MembershipController {
             discountAmount = Math.min(discountAmount, MAX_DISCOUNT_AMOUNT);
 
             receipt.applyMembershipDiscount(discountAmount);
-            receipt.calculateFinalPayment();
         }
+        receipt.calculateFinalPayment();
         return receipt;
     }
 
