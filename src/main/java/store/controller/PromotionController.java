@@ -26,7 +26,7 @@ public class PromotionController {
         this.receipt = new Receipt();
     }
 
-    public Receipt applyPromotion(OrderItemsCollection orderItemsCollection) {
+    public Receipt startPromotion(OrderItemsCollection orderItemsCollection) {
         List<OrderItems> orderItems = orderItemsCollection.getOrderItems();
 
         for (OrderItems orderItem : orderItems) {
@@ -75,22 +75,29 @@ public class PromotionController {
 
             if (askFullPriceItems(product.getName(), fullPriceItems)) {
                 product.changeQuantity(0);
+                getFreeItem(product.getName(), freeQuantity, product.getPrice());
                 return fullPriceItems;
             }
             product.changeQuantity(product.getQuantity() - maxPromotionAmount);
+            getFreeItem(product.getName(), freeQuantity, product.getPrice());
             return orderQuantity - maxPromotionAmount;
         }
 
         if (orderQuantity % promotionGroupSize == buyQuantity) {
             if (askAdditionalPromotionItems(product.getName(), freeQuantity)) {
-                OrderItems freeItem = new OrderItems(product.getName(), freeQuantity);
-                receipt.addFreeItem(freeItem);
-                receipt.applyPromotionDiscount(freeItem.getTotalPrice());
+                getFreeItem(product.getName(), freeQuantity, product.getPrice());
             }
         }
 
+        getFreeItem(product.getName(), freeQuantity, product.getPrice());
         product.changeQuantity(product.getQuantity() - orderQuantity);
         return 0;
+    }
+
+    private void getFreeItem(String productName, int orderQuantity, int price) {
+        OrderItems freeItem = new OrderItems(productName, orderQuantity, price);
+        receipt.addFreeItem(freeItem);
+        receipt.applyPromotionDiscount(freeItem.getPrice());
     }
 
     private boolean askAdditionalPromotionItems(String productName, int orderQuantity) {
