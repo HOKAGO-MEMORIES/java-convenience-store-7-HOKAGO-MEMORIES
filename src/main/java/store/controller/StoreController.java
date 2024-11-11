@@ -3,6 +3,7 @@ package store.controller;
 import store.domain.OrderItemsCollection;
 import store.domain.ProductCollection;
 import store.domain.PromotionCollection;
+import store.domain.Receipt;
 
 public class StoreController {
 
@@ -18,7 +19,9 @@ public class StoreController {
         while (true) {
             OrderItemsCollection orderItemsCollection = new PurchaseController(
                     productCollection).createOrderItemsCollection(productCollection);
-            new PromotionController(productCollection, promotionCollection).applyPromotion(orderItemsCollection);
+            Receipt receipt = new PromotionController(productCollection, promotionCollection).applyPromotion(
+                    orderItemsCollection);
+            receipt = new MembershipController(receipt).applyMembership();
         }
 
     }
