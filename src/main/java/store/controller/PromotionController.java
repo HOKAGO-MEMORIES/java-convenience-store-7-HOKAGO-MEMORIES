@@ -18,14 +18,15 @@ public class PromotionController {
     private final static OutputView outputView = new OutputView();
     private final ProductCollection productCollection;
     private final PromotionCollection promotionCollection;
+    private final Receipt receipt;
 
     public PromotionController(ProductCollection productCollection, PromotionCollection promotionCollection) {
         this.productCollection = productCollection;
         this.promotionCollection = promotionCollection;
+        this.receipt = new Receipt();
     }
 
     public Receipt applyPromotion(OrderItemsCollection orderItemsCollection) {
-        Receipt receipt = new Receipt();
         List<OrderItems> orderItems = orderItemsCollection.getOrderItems();
 
         for (OrderItems orderItem : orderItems) {
@@ -84,6 +85,9 @@ public class PromotionController {
         // 프로모션에 추가 아이템을 받을 수 있는 경우 처리
         if (orderQuantity % promotionGroupSize == buyQuantity) {
             if (askAdditionalPromotionItems(product.getName(), freeQuantity)) {
+                OrderItems freeItem = new OrderItems(product.getName(), freeQuantity);
+                receipt.addFreeItem(freeItem);
+                receipt.applyPromotionDiscount(freeItem.getTotalPrice());
                 product.changeQuantity(product.getQuantity() - maxPromotionAmount);
                 return 0;
             }
