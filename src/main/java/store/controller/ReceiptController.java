@@ -41,8 +41,8 @@ public class ReceiptController {
     }
 
     private void printFreeItems() {
-        ReceiptFormat.printPromotionHeader();
         if (!receipt.getFreeItems().isEmpty()) {
+            ReceiptFormat.printPromotionHeader();
             for (OrderItems item : receipt.getFreeItems()) {
                 System.out.print(ReceiptFormat.formatValue(item.getProductName(), ReceiptFormat.FREE_ITEM.getWidth()));
                 System.out.println();
