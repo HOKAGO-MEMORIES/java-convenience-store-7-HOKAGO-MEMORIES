@@ -70,29 +70,23 @@ public class PromotionController {
 
         int maxPromotionAmount = (product.getQuantity() / promotionGroupSize) * promotionGroupSize;
 
-        // 구매 수량이 프로모션 가능 수량을 초과할 경우 처리
         if (orderQuantity > maxPromotionAmount) {
-            if (askFullPriceItems(product.getName(), orderQuantity - maxPromotionAmount)) {
-                orderQuantity -= product.getQuantity();
+            int fullPriceItems = orderQuantity - maxPromotionAmount;
+
+            if (askFullPriceItems(product.getName(), fullPriceItems)) {
                 product.changeQuantity(0);
-                return orderQuantity;
+                return fullPriceItems;
             }
-            orderQuantity -= maxPromotionAmount;
             product.changeQuantity(product.getQuantity() - maxPromotionAmount);
-            return orderQuantity;
+            return orderQuantity - maxPromotionAmount;
         }
 
-        // 프로모션에 추가 아이템을 받을 수 있는 경우 처리
         if (orderQuantity % promotionGroupSize == buyQuantity) {
             if (askAdditionalPromotionItems(product.getName(), freeQuantity)) {
                 OrderItems freeItem = new OrderItems(product.getName(), freeQuantity);
                 receipt.addFreeItem(freeItem);
                 receipt.applyPromotionDiscount(freeItem.getTotalPrice());
-                product.changeQuantity(product.getQuantity() - maxPromotionAmount);
-                return 0;
             }
-            product.changeQuantity(product.getQuantity() - orderQuantity);
-            return 0;
         }
 
         product.changeQuantity(product.getQuantity() - orderQuantity);

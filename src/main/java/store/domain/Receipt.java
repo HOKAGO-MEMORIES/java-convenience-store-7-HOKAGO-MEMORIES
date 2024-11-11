@@ -45,4 +45,24 @@ public class Receipt {
         return totalAmount;
     }
 
+    public List<OrderItems> getPurchasedItems() {
+        return purchasedItems;
+    }
+
+    public List<OrderItems> getFreeItems() {
+        return freeItems;
+    }
+
+    public int getPromotionDiscount() {
+        return promotionDiscount;
+    }
+
+    public int getMembershipDiscount() {
+        return membershipDiscount;
+    }
+
+    public int getFinalPayment() {
+        return finalPayment;
+    }
+
 }

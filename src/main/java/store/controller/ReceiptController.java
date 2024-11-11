@@ -1,0 +1,85 @@
+package store.controller;
+
+import store.domain.OrderItems;
+import store.domain.Receipt;
+import store.util.ReceiptFormat;
+
+public class ReceiptController {
+    private final Receipt receipt;
+    private final static String MINUS = "-";
+
+    public ReceiptController(Receipt receipt) {
+        this.receipt = receipt;
+    }
+
+    public void printReceipt() {
+        printHeader();
+        printOrderItems();
+        printFreeItems();
+        printResult();
+    }
+
+    private void printHeader() {
+        ReceiptFormat.printStoreHeader();
+        System.out.println(
+                ReceiptFormat.getFormatedLabel(ReceiptFormat.ITEM) +
+                        ReceiptFormat.getFormatedLabel(ReceiptFormat.QUANTITY) +
+                        ReceiptFormat.getFormatedLabel(ReceiptFormat.PRICE)
+        );
+    }
+
+    private void printOrderItems() {
+        for (OrderItems item : receipt.getPurchasedItems()) {
+            System.out.print(ReceiptFormat.formatValue(item.getProductName(), ReceiptFormat.ITEM.getWidth()));
+            System.out.print(
+                    ReceiptFormat.formatValue(String.valueOf(item.getOrderQuantity()),
+                            ReceiptFormat.QUANTITY.getWidth()));
+            System.out.print(
+                    ReceiptFormat.formatValue(String.valueOf(item.getTotalPrice()), ReceiptFormat.PRICE.getWidth()));
+            System.out.println();
+        }
+    }
+
+    private void printFreeItems() {
+        ReceiptFormat.printPromotionHeader();
+        if (!receipt.getFreeItems().isEmpty()) {
+            for (OrderItems item : receipt.getFreeItems()) {
+                System.out.print(ReceiptFormat.formatValue(item.getProductName(), ReceiptFormat.FREE_ITEM.getWidth()));
+                System.out.println();
+            }
+        }
+    }
+
+    private void printResult() {
+        ReceiptFormat.printSeparator();
+
+        System.out.println(
+                ReceiptFormat.formatValue(ReceiptFormat.TOTAL_PAYMENT.getLabel(),
+                        ReceiptFormat.TOTAL_PAYMENT.getWidth())
+                        +
+                        ReceiptFormat.formatValue(String.valueOf(receipt.getTotalAmount()),
+                                ReceiptFormat.TOTAL_PAYMENT.getWidth())
+        );
+
+        System.out.println(
+                ReceiptFormat.formatValue(ReceiptFormat.PROMOTION_DISCOUNT.getLabel(),
+                        ReceiptFormat.PROMOTION_DISCOUNT.getWidth()) +
+                        ReceiptFormat.formatValue(String.format("%s%s", MINUS, receipt.getPromotionDiscount()),
+                                ReceiptFormat.PROMOTION_DISCOUNT.getWidth())
+        );
+
+        System.out.println(
+                ReceiptFormat.formatValue(ReceiptFormat.MEMBERSHIP_DISCOUNT.getLabel(),
+                        ReceiptFormat.MEMBERSHIP_DISCOUNT.getWidth()) +
+                        ReceiptFormat.formatValue(String.format("%s%s", MINUS, receipt.getMembershipDiscount()),
+                                ReceiptFormat.MEMBERSHIP_DISCOUNT.getWidth())
+        );
+
+        System.out.println(
+                ReceiptFormat.formatValue(ReceiptFormat.FINAL_PAYMENT.getLabel(),
+                        ReceiptFormat.FINAL_PAYMENT.getWidth()) +
+                        ReceiptFormat.formatValue(String.valueOf(receipt.getFinalPayment()),
+                                ReceiptFormat.FINAL_PAYMENT.getWidth())
+        );
+    }
+}

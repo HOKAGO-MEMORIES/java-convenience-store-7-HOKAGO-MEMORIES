@@ -1,5 +1,8 @@
 package store.service;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.List;
 import store.domain.Product;
 import store.domain.ProductCollection;
@@ -31,8 +34,37 @@ public class ProductService {
         return productCollection;
     }
 
+    public void updateProductQuantity(String productName, int quantityToSubtract) {
+        List<String> lines = readLines();
+        for (int i = 1; i < lines.size(); i++) {
+            String line = lines.get(i);
+            String[] tokens = line.split(DELIMITER);
+            String name = tokens[0];
+            int currentQuantity = Integer.parseInt(tokens[2]);
+
+            if (name.equals(productName)) {
+                int newQuantity = currentQuantity - quantityToSubtract;
+                tokens[2] = String.valueOf(newQuantity);
+                lines.set(i, String.join(DELIMITER, tokens));
+                break;
+            }
+        }
+        writeUpdatedLinesToFile(lines);
+    }
+
     private List<String> readLines() {
         return reader.readResource(Resource.PRODUCTS_FILE);
+    }
+
+    private void writeUpdatedLinesToFile(List<String> lines) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(Resource.PRODUCTS_FILE.getFileName()))) {
+            for (String line : lines) {
+                writer.write(line);
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private Product loadProduct(String[] tokens) {

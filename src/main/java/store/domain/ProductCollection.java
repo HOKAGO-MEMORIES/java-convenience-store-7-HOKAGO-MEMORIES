@@ -20,12 +20,15 @@ public class ProductCollection {
                 .anyMatch(product -> product.hasName(productName));
     }
 
-    public boolean hasEnoughQuantity(String productName, int quantity) {
+    public boolean hasEnoughQuantity(String productName, int orderQuantity) {
         List<Product> matchingProducts = getProduct(productName);
         for (Product product : matchingProducts) {
-            quantity = product.decreaseQuantity(quantity);
+            orderQuantity = product.decreaseQuantity(orderQuantity);
+            if (orderQuantity <= 0) {
+                return true;
+            }
         }
-        return quantity <= 0;
+        return false;
     }
 
     public List<Product> getProduct(String productName) {
