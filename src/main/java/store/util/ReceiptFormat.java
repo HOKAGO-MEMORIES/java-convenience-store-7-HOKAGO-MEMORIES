@@ -2,16 +2,16 @@ package store.util;
 
 public enum ReceiptFormat {
     STORE_HEADER("==============W 편의점================", 50),
-    ITEM("상품명", 20),
-    QUANTITY("수량", 10),
-    PRICE("금액", 10),
-    PROMOTION_HEADER("=============증\t정===============", 50),
-    FREE_ITEM("증정", 20),
+    ITEM("상품명", 15),
+    QUANTITY("수량", 15),
+    PRICE("금액", 15),
+    PROMOTION_HEADER("=============증\t\t정===============", 50),
+    FREE_ITEM("증정", 15),
     SEPARATOR("====================================", 50),
-    TOTAL_PAYMENT("총구매액", 15),
-    PROMOTION_DISCOUNT("행사할인", 15),
-    MEMBERSHIP_DISCOUNT("멤버십할인", 15),
-    FINAL_PAYMENT("내실돈", 15);
+    TOTAL_PAYMENT("총구매액", 12),
+    PROMOTION_DISCOUNT("행사할인", 26),
+    MEMBERSHIP_DISCOUNT("멤버십할인", 26),
+    FINAL_PAYMENT("내실돈", 26);
 
     private final String label;
     private final int width;

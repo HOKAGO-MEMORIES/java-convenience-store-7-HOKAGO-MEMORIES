@@ -77,4 +77,10 @@ public class Receipt {
     public int getFinalPayment() {
         return finalPayment;
     }
+
+    public int getTotalQuantity() {
+        return purchasedItems.stream()
+                .mapToInt(OrderItems::getOrderQuantity)
+                .sum();
+    }
 }

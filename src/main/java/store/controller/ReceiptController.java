@@ -63,12 +63,18 @@ public class ReceiptController {
     }
 
     private void printTotalPayment() {
+        int totalQuantity = receipt.getTotalQuantity();
+        int totalAmount = receipt.getTotalAmount();
 
-        System.out.println(
+        System.out.print(
                 ReceiptFormat.formatValue(ReceiptFormat.TOTAL_PAYMENT.getLabel(),
-                        ReceiptFormat.TOTAL_PAYMENT.getWidth()) +
-                        ReceiptFormat.formatValue(String.format("%,d", receipt.getTotalAmount()),
-                                ReceiptFormat.TOTAL_PAYMENT.getWidth())
+                        ReceiptFormat.TOTAL_PAYMENT.getWidth())
+        );
+        System.out.print(
+                ReceiptFormat.formatValue(String.valueOf(totalQuantity), ReceiptFormat.QUANTITY.getWidth())
+        );
+        System.out.println(
+                ReceiptFormat.formatValue(String.format("%,d", totalAmount), ReceiptFormat.PRICE.getWidth())
         );
     }
 
