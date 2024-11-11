@@ -24,7 +24,7 @@ public class OrderItems {
         return orderQuantity;
     }
 
-    public int getTotalPrice() {
-        return price * orderQuantity;
+    public int getPrice() {
+        return price;
     }
 }

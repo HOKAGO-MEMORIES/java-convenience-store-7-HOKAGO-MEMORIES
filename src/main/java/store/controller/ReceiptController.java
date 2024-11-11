@@ -35,7 +35,7 @@ public class ReceiptController {
                     ReceiptFormat.formatValue(String.valueOf(item.getOrderQuantity()),
                             ReceiptFormat.QUANTITY.getWidth()));
             System.out.print(
-                    ReceiptFormat.formatValue(String.format("%,d", item.getTotalPrice()),
+                    ReceiptFormat.formatValue(String.format("%,d", item.getPrice()),
                             ReceiptFormat.PRICE.getWidth()));
             System.out.println();
         }
@@ -46,6 +46,9 @@ public class ReceiptController {
             ReceiptFormat.printPromotionHeader();
             for (OrderItems item : receipt.getFreeItems()) {
                 System.out.print(ReceiptFormat.formatValue(item.getProductName(), ReceiptFormat.FREE_ITEM.getWidth()));
+                System.out.print(
+                        ReceiptFormat.formatValue(String.valueOf(item.getOrderQuantity()),
+                                ReceiptFormat.QUANTITY.getWidth()));
                 System.out.println();
             }
         }

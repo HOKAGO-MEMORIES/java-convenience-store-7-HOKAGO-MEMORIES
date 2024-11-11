@@ -19,7 +19,7 @@ public class StoreController {
         while (true) {
             OrderItemsCollection orderItemsCollection = new PurchaseController(
                     productCollection).createOrderItemsCollection(productCollection);
-            Receipt receipt = new PromotionController(productCollection, promotionCollection).applyPromotion(
+            Receipt receipt = new PromotionController(productCollection, promotionCollection).startPromotion(
                     orderItemsCollection);
             receipt = new MembershipController(receipt).applyMembership();
             new ReceiptController(receipt).printReceipt();

@@ -22,7 +22,7 @@ public class Receipt {
 
     public void addPurchasedItem(OrderItems item) {
         purchasedItems.add(item);
-        totalAmount += item.getTotalPrice();
+        totalAmount += item.getPrice();
     }
 
     public void addFreeItem(OrderItems item) {
