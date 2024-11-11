@@ -6,8 +6,10 @@ import store.domain.OrderItemsCollection;
 import store.domain.Product;
 import store.domain.ProductCollection;
 import store.domain.PromotionCollection;
+import store.domain.Receipt;
 import store.domain.checker.ReplyChecker;
 import store.request.ReplyRequest;
+import store.util.PromotionType;
 import store.view.input.InputView;
 import store.view.output.OutputView;
 
@@ -16,27 +18,26 @@ public class PromotionController {
     private final static OutputView outputView = new OutputView();
     private final ProductCollection productCollection;
     private final PromotionCollection promotionCollection;
-    private final static int TWO_PLUS_ONE = 3;
-    private final static int TWO_PLUS_ONE_BUY = 2;
-    private final static int TWO_PLUS_ONE_GET = 1;
-    private final static int ONE_PLUS_ONE = 2;
-    private final static int ONE_PLUS_ONE_BUY = 1;
-    private final static int ONE_PLUS_ONE_GET = 1;
 
     public PromotionController(ProductCollection productCollection, PromotionCollection promotionCollection) {
         this.productCollection = productCollection;
         this.promotionCollection = promotionCollection;
     }
 
-    public void applyPromotion(OrderItemsCollection orderItemsCollection) {
+    public Receipt applyPromotion(OrderItemsCollection orderItemsCollection) {
+        Receipt receipt = new Receipt();
         List<OrderItems> orderItems = orderItemsCollection.getOrderItems();
 
         for (OrderItems orderItem : orderItems) {
             List<Product> products = productCollection.getProduct(orderItem.getProductName());
             for (Product product : products) {
-                checkPromotion(product, orderItem.getOrderQuantity());
+                int remainingQuantity = checkPromotion(product, orderItem.getOrderQuantity());
+                OrderItems purchasedItem = new OrderItems(product.getName(), remainingQuantity,
+                        product.getPrice() * remainingQuantity);
+                receipt.addPurchasedItem(purchasedItem);
             }
         }
+        return receipt;
     }
 
     private int checkPromotion(Product product, int orderQuantity) {
@@ -54,31 +55,21 @@ public class PromotionController {
     }
 
     private int applyTwoPlusOne(Product product, int orderQuantity) {
-        int maxPromotionAmount = (product.getQuantity() / TWO_PLUS_ONE) * TWO_PLUS_ONE;
-        if (orderQuantity > maxPromotionAmount) {
-            if (askFullPriceItems(product.getName(), orderQuantity - maxPromotionAmount)) {
-                orderQuantity -= product.getQuantity();
-                product.changeQuantity(0);
-                return orderQuantity;
-            }
-            orderQuantity -= maxPromotionAmount;
-            product.changeQuantity(product.getQuantity() - maxPromotionAmount);
-            return orderQuantity;
-        }
-        if (orderQuantity % TWO_PLUS_ONE == TWO_PLUS_ONE_BUY) {
-            if (askAdditionalPromotionItems(product.getName(), TWO_PLUS_ONE_GET)) {
-                product.changeQuantity(product.getQuantity() - maxPromotionAmount);
-                return 0;
-            }
-            product.changeQuantity(product.getQuantity() - orderQuantity);
-            return 0;
-        }
-        product.changeQuantity(product.getQuantity() - orderQuantity);
-        return 0;
+        return applyPromotion(product, orderQuantity, PromotionType.TWO_PLUS_ONE);
     }
 
     private int applyOnePlusOne(Product product, int orderQuantity) {
-        int maxPromotionAmount = (product.getQuantity() / ONE_PLUS_ONE) * ONE_PLUS_ONE;
+        return applyPromotion(product, orderQuantity, PromotionType.ONE_PLUS_ONE);
+    }
+
+    private int applyPromotion(Product product, int orderQuantity, PromotionType promotionType) {
+        int promotionGroupSize = promotionType.getPromotionGroupSize();
+        int buyQuantity = promotionType.getBuyQuantity();
+        int freeQuantity = promotionType.getFreeQuantity();
+
+        int maxPromotionAmount = (product.getQuantity() / promotionGroupSize) * promotionGroupSize;
+
+        // 구매 수량이 프로모션 가능 수량을 초과할 경우 처리
         if (orderQuantity > maxPromotionAmount) {
             if (askFullPriceItems(product.getName(), orderQuantity - maxPromotionAmount)) {
                 orderQuantity -= product.getQuantity();
@@ -89,14 +80,17 @@ public class PromotionController {
             product.changeQuantity(product.getQuantity() - maxPromotionAmount);
             return orderQuantity;
         }
-        if (orderQuantity % ONE_PLUS_ONE == ONE_PLUS_ONE_BUY) {
-            if (askAdditionalPromotionItems(product.getName(), ONE_PLUS_ONE_GET)) {
+
+        // 프로모션에 추가 아이템을 받을 수 있는 경우 처리
+        if (orderQuantity % promotionGroupSize == buyQuantity) {
+            if (askAdditionalPromotionItems(product.getName(), freeQuantity)) {
                 product.changeQuantity(product.getQuantity() - maxPromotionAmount);
                 return 0;
             }
             product.changeQuantity(product.getQuantity() - orderQuantity);
             return 0;
         }
+
         product.changeQuantity(product.getQuantity() - orderQuantity);
         return 0;
     }
