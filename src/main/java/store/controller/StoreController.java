@@ -22,6 +22,11 @@ public class StoreController {
             Receipt receipt = new PromotionController(productCollection, promotionCollection).applyPromotion(
                     orderItemsCollection);
             receipt = new MembershipController(receipt).applyMembership();
+            new ReceiptController(receipt).printReceipt();
+
+            if (!new RepurchaseController().askRepurchase()) {
+                return;
+            }
         }
 
     }
