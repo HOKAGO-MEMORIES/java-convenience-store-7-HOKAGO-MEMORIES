@@ -33,8 +33,9 @@ public class PromotionController {
             List<Product> products = productCollection.getProduct(orderItem.getProductName());
             for (Product product : products) {
                 int remainingQuantity = checkPromotion(product, orderItem.getOrderQuantity());
-                OrderItems purchasedItem = new OrderItems(product.getName(), remainingQuantity,
-                        product.getPrice() * remainingQuantity);
+                OrderItems purchasedItem = new OrderItems(product.getName(),
+                        orderItem.getOrderQuantity() - remainingQuantity,
+                        product.getPrice() * (orderItem.getOrderQuantity() - remainingQuantity));
                 receipt.addPurchasedItem(purchasedItem);
             }
         }
@@ -75,26 +76,27 @@ public class PromotionController {
 
             if (askFullPriceItems(product.getName(), fullPriceItems)) {
                 product.changeQuantity(0);
-                getFreeItem(product.getName(), freeQuantity, product.getPrice());
+                addFreeItem(product.getName(), freeQuantity, product.getPrice());
                 return fullPriceItems;
             }
             product.changeQuantity(product.getQuantity() - maxPromotionAmount);
-            getFreeItem(product.getName(), freeQuantity, product.getPrice());
+            addFreeItem(product.getName(), freeQuantity, product.getPrice());
             return orderQuantity - maxPromotionAmount;
         }
 
         if (orderQuantity % promotionGroupSize == buyQuantity) {
             if (askAdditionalPromotionItems(product.getName(), freeQuantity)) {
-                getFreeItem(product.getName(), freeQuantity, product.getPrice());
+                addFreeItem(product.getName(), freeQuantity, product.getPrice());
+                return 0;
             }
         }
 
-        getFreeItem(product.getName(), freeQuantity, product.getPrice());
+        addFreeItem(product.getName(), freeQuantity, product.getPrice());
         product.changeQuantity(product.getQuantity() - orderQuantity);
         return 0;
     }
 
-    private void getFreeItem(String productName, int orderQuantity, int price) {
+    private void addFreeItem(String productName, int orderQuantity, int price) {
         OrderItems freeItem = new OrderItems(productName, orderQuantity, price);
         receipt.addFreeItem(freeItem);
         receipt.applyPromotionDiscount(freeItem.getPrice());

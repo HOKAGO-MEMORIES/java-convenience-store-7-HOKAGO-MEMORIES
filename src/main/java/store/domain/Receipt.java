@@ -21,11 +21,24 @@ public class Receipt {
     }
 
     public void addPurchasedItem(OrderItems item) {
+        for (OrderItems purchasedItem : purchasedItems) {
+            if (purchasedItem.getProductName().equals(item.getProductName())) {
+                purchasedItem.increaseQuantity(item.getOrderQuantity());
+                totalAmount += item.getPrice();
+                return;
+            }
+        }
         purchasedItems.add(item);
         totalAmount += item.getPrice();
     }
 
     public void addFreeItem(OrderItems item) {
+        for (OrderItems freeItem : freeItems) {
+            if (freeItem.getProductName().equals(item.getProductName())) {
+                freeItem.increaseQuantity(item.getOrderQuantity());
+                return;
+            }
+        }
         freeItems.add(item);
     }
 
@@ -64,5 +77,4 @@ public class Receipt {
     public int getFinalPayment() {
         return finalPayment;
     }
-
 }
